@@ -1,5 +1,18 @@
 import Link from "next/link";
 import React from "react";
+import type { Metadata } from "next";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Page Not Found - Videoglancer",
+    description:
+      "Sorry, the page you are looking for cannot be found. Please check the URL or return to the homepage.",
+    robots: "noindex, follow",
+    alternates: {
+      canonical: "https://videoglancer.top/404/",
+    },
+  };
+};
 
 const NotFound = () => {
   return (

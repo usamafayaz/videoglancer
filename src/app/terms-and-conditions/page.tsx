@@ -1,5 +1,19 @@
 import React from "react";
 
+import type { Metadata } from "next";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Terms and Conditions - Videoglancer",
+    description:
+      "Read the terms and conditions for using videoglancer. Learn about age restrictions, copyright policy, and more. Start using videoglancer today!",
+    robots:
+      "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    alternates: {
+      canonical: "https://videoglancer.top/terms-and-conditions/",
+    },
+  };
+};
 export default function TermsAndConditions() {
   return (
     <div className="mt-48 flex flex-col items-center justify-center h-100 bg-white">

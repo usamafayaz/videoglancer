@@ -1,4 +1,18 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Privacy Policy - Videoglancer",
+    description:
+      "Learn about how Videoglancer protects your privacy. Read our Privacy Policy to understand how your information is collected and used. Start using Videoglancer today!",
+    robots:
+      "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    alternates: {
+      canonical: "https://videoglancer.top/privacy-policy/",
+    },
+  };
+};
 
 export default function PrivacyPolicy() {
   return (

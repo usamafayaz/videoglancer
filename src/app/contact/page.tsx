@@ -1,5 +1,18 @@
 import React from "react";
+import type { Metadata } from "next";
 
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Contact - Videoglancer",
+    description:
+      "Have a question or feedback? Contact videoglancer for quick support and assistance. We&#039;d love to hear from you!",
+    robots:
+      "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    alternates: {
+      canonical: "https://videoglancer.top/contact/",
+    },
+  };
+};
 export default function Contact() {
   return (
     <div className="mt-48 flex flex-col items-center justify-center h-100 bg-white">

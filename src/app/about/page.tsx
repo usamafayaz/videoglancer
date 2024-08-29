@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import Instructions from "@/components/instructions/instructions";
 import React from "react";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "About - Videoglancer",
+    description:
+      "Learn how Videoglancer simplifies note-taking from YouTube tutorials. Convert videos to PDFs for easy studying. Try it now!",
+    robots:
+      "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    alternates: {
+      canonical: "https://videoglancer.top/about/",
+    },
+  };
+};
+
 export default function About() {
   return (
     <div className="mt-48 flex flex-col items-center justify-center h-100 bg-white">
@@ -15,13 +30,14 @@ export default function About() {
           journey more efficient, effective, and enjoyable.
         </p>
       </div>
+      {/* Rest of your existing content */}
       <div className="w-[90%] max-w-[920px] lg:w-[70%] mt-8">
         <h2 className="text-2xl font-bold">Our Vision:</h2>
         <p className="mt-4">
           Our vision is to empower learners around the world with a tool that
           simplifies the process of converting valuable video content into
           insightful PDF notes. We believe that information should be easily
-          accessible, customizable, and memorable, and that’s precisely what
+          accessible, customizable, and memorable, and that's precisely what
           VideoGlancer aims to deliver.
         </p>
       </div>
@@ -40,7 +56,7 @@ export default function About() {
             },
             {
               step: "Learn Anywhere, Anytime: ",
-              desc: "With downloadable PDF notes, your learning isn’t confined to an internet connection. Access your insights on the go, even offline.",
+              desc: "With downloadable PDF notes, your learning isn't confined to an internet connection. Access your insights on the go, even offline.",
             },
             {
               step: "Innovation in Learning: ",
@@ -52,9 +68,9 @@ export default function About() {
       <div className="w-[90%] max-w-[920px] lg:w-[70%] mt-8">
         <h2 className="text-2xl font-bold">Our Commitment to Excellence:</h2>
         <p className="mt-4">
-          At VideoGlancer, we’re committed to delivering a seamless and
+          At VideoGlancer, we're committed to delivering a seamless and
           user-friendly platform that enhances your interaction with online
-          educational content. We’re continually exploring new ways to improve
+          educational content. We're continually exploring new ways to improve
           our services and provide you with a tool that resonates with your
           learning needs.
         </p>
@@ -64,7 +80,7 @@ export default function About() {
         <p className="mt-4">
           We invite you to be a part of the VideoGlancer community. Discover a
           world where learning transcends traditional boundaries, and knowledge
-          is accessible at your fingertips. Together, we’re redefining the
+          is accessible at your fingertips. Together, we're redefining the
           learning landscape, one PDF note at a time.
         </p>
         <p className="mt-4">
@@ -72,7 +88,7 @@ export default function About() {
           forward to being your companion on the road to knowledge and growth.
         </p>
         <p className="mt-4">
-          Remember, VideoGlancer is not just a tool; it’s a transformative
+          Remember, VideoGlancer is not just a tool; it's a transformative
           experience that empowers you to unlock the potential of online videos.
           Dive in and explore the world of VideoGlancer today!
         </p>

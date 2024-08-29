@@ -1,4 +1,18 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Disclaimer - Videoglancer",
+    description:
+      "Read the disclaimer for Videoglancer. Learn about our limitations of liability and terms of use. Contact us if you have any questions. Start using Videoglancer today!",
+    robots:
+      "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+    alternates: {
+      canonical: "https://videoglancer.top/disclaimer/",
+    },
+  };
+};
 
 export default function Disclaimer() {
   return (
