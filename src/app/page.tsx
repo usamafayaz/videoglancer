@@ -1,113 +1,209 @@
-import Image from "next/image";
+"use client";
+import React, { useState } from "react";
+import Instructions from "../components/instructions/instructions";
+import { ApiService } from "../services/ApiService";
+import ActivityIndicator from "../components/activityIndicator/ActivityIndicator";
+import { CommonService } from "../services/CommonService";
 
-export default function Home() {
+const Home = () => {
+  const [videoLink, setVideoLink] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const showMessage = (message: string) => {
+    setMessage(message);
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+  const fetchPdf = async (event: any) => {
+    event.preventDefault();
+    if (!videoLink) {
+      showMessage("Please enter a youtube video link");
+    } else {
+      try {
+        setLoading(true);
+        ApiService.fetchPdf(videoLink)
+          .then(async (response) => {
+            const result = await response.json();
+            if (result.pdf) {
+              const link = document.createElement("a");
+              link.href = `data:application/pdf;base64,${result.pdf}`;
+              link.download = `${CommonService.getTimestamp()}.pdf`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }
+            setLoading(false);
+            setVideoLink("");
+            showMessage("Pdf file downloaded successfully.");
+          })
+          .catch((error) => {
+            console.log("error during fetching pdf", error);
+            setVideoLink("");
+          });
+      } catch (error) {
+        console.log("error during fetching api", error);
+      }
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
+    <div className="mt-4 flex  flex-col items-center justify-center h-100 bg-white">
+      <div className="rounded-md w-[90%] max-w-[920px] lg:w-[70%] mt-16 bg-gradient-to-r from-purple-500 to-pink-600 p-8 text-center text-white">
+        <h1 className="text-4xl font-bold">Convert YouTube Videos to PDF</h1>
+        <p className="mt-4 text-lg">
+          Easily convert any YouTube video into a PDF document
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <form className="mt-16" onSubmit={fetchPdf}>
+          <input
+            type="text"
+            className="w-[80%] text-stone-800 p-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter YouTube video link"
+            value={videoLink}
+            onChange={(e) => setVideoLink(e.target.value)}
+          />
+          {message ? (
+            <div className="w-[100%] mt-4">
+              <p className="text-red-200 text-center">{message}</p>
+            </div>
+          ) : (
+            <div className="w-[100%] mt-4 opacity-0">...</div>
+          )}
+          <button
+            disabled={loading}
+            type="submit"
+            className="w-[60%] mt-4 p-4 mb-10 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+            {loading && videoLink ? (
+              <ActivityIndicator title={"Converting your video"} />
+            ) : (
+              "Convert to PDF"
+            )}
+          </button>
+        </form>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+      <div className="w-[90%] max-w-[920px] lg:w-[70%] mt-16">
+        <p className="text-md">
+          The digital age, learning through online videos has become a popular
+          way to acquire knowledge. However, retaining the information from
+          these videos can be challenging. To address this issue, we introduce
+          VideoGlancer – a revolutionary tool designed to convert YouTube videos
+          into easily accessible PDF notes. This single-page website empowers
+          users to effortlessly transform their favorite video content into
+          comprehensive, portable, and visually appealing PDF documents,
+          ensuring a seamless learning experience.
+        </p>
+      </div>
+      <div className="w-[90%] max-w-[920px] lg:w-[70%] my-8">
+        <Instructions
+          heading={"How to Use VideoGlancer:"}
+          description={
+            "Using VideoGlancer is a straightforward process that anyone, regardless of technical expertise, can follow:"
+          }
+          points={[
+            {
+              step: "Access the Website: ",
+              desc: "Open your web browser and navigate to videoglancer.online.",
+            },
+            {
+              step: "Enter the YouTube Video Link: ",
+              desc: "After entering the YouTube video link, click the “Convert” button. VideoGlancer will process the video content and extract key information, creating an organized set of notes.",
+            },
+            {
+              step: "Generate PDF Notes: ",
+              desc: "Open your web browser and navigate to videoglancer.online.",
+            },
+            {
+              step: "Preview and Customize: ",
+              desc: "Once the PDF notes are generated, you can preview them to ensure accuracy. VideoGlancer allows you to customize the notes by highlighting important points, adding annotations, and adjusting formatting.",
+            },
+            {
+              step: "Download and Save: ",
+              desc: "Satisfied with the PDF notes? Download the PDF file to your device. You now have a comprehensive summary of the video’s content, making it convenient to revisit and study.",
+            },
+          ]}
         />
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="w-[90%] max-w-[920px] lg:w-[70%] my-8">
+        <Instructions
+          heading={"Features of VideoGlancer:"}
+          description={
+            "VideoGlancer stands out with a range of features tailored to enhance the learning experience:"
+          }
+          points={[
+            {
+              step: "Automated Summarization: ",
+              desc: "VideoGlancer’s advanced algorithms analyze the video’s audio and visual components to extract key concepts, ensuring that the generated PDF notes are comprehensive and accurate.",
+            },
+            {
+              step: "Customization Options: ",
+              desc: "Users can personalize the PDF notes by highlighting important points, adding notes, and adjusting the formatting to suit their learning style.",
+            },
+            {
+              step: "Time-Stamped Notes: ",
+              desc: "VideoGlancer embeds time stamps within the notes, enabling users to easily navigate to specific points in the video directly from the PDF.",
+            },
+            {
+              step: "Offline Learning: ",
+              desc: "With the downloadable PDF notes, users can access the summarized content offline, eliminating the need for a constant internet connection.",
+            },
+            {
+              step: "Cross-Device Compatibility: ",
+              desc: "VideoGlancer is designed to work seamlessly on various devices, including laptops, tablets, and smartphones, providing flexibility for on-the-go learning.",
+            },
+            {
+              step: "Cloud Storage Integration: ",
+              desc: "Users can opt to save their PDF notes to popular cloud storage platforms, ensuring easy access from anywhere and preventing data loss.",
+            },
+          ]}
+        />
       </div>
-    </main>
+      <div className="w-[90%] max-w-[920px] lg:w-[70%] my-8">
+        <Instructions
+          separateLine={true}
+          heading={"Frequently Asked Questions:"}
+          description={""}
+          points={[
+            {
+              step: "Is VideoGlancer free to use?",
+              desc: "Yes, VideoGlancer offers a basic version with free access to its core features. For enhanced functionalities, premium subscription plans are available.",
+            },
+            {
+              step: "What quality of PDF notes can I expect?",
+              desc: "VideoGlancer’s algorithms strive to capture the essence of the video accurately. While minor adjustments might be needed, the generated PDF notes offer a comprehensive summary.",
+            },
+            {
+              step: "Can I convert videos from sources other than YouTube?",
+              desc: "Currently, VideoGlancer supports YouTube videos exclusively. However, we are actively exploring options to expand compatibility.",
+            },
+            {
+              step: "Are my converted videos and notes private?",
+              desc: "Yes, VideoGlancer respects user privacy. Your converted videos and notes are securely processed and not shared with any third parties.",
+            },
+            {
+              step: "Can I edit the notes after conversion?",
+              desc: "Absolutely. VideoGlancer provides editing features that allow you to add annotations, highlights, and make adjustments to the generated notes.",
+            },
+          ]}
+        />
+      </div>
+      <div className="w-[90%] max-w-[920px] lg:w-[70%] mt-8">
+        <h2 className="text-2xl font-bold text-black mb-4">Conclusion</h2>
+        <p>
+          VideoGlancer revolutionizes the way we consume online video content by
+          offering a seamless and efficient solution for converting YouTube
+          videos into comprehensive PDF notes. With its user-friendly interface,
+          customization options, and innovative features, VideoGlancer empowers
+          learners to retain information effectively. Whether you’re a student,
+          a professional, or a lifelong learner, VideoGlancer makes it easier
+          than ever to capture the essence of your favorite YouTube videos and
+          access them whenever and wherever you want. Embrace the future of
+          learning with VideoGlancer and elevate your educational journey.
+        </p>
+      </div>
+    </div>
   );
-}
+};
+
+export default Home;
