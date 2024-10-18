@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Video Glancer
 
-## Getting Started
+**Video Glancer** is a Next.js application that allows users to input YouTube links and converts the video content into downloadable PDF files, providing an easy way to access video information offline.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Input any YouTube video link.
+- Converts video content into a PDF format.
+- Download the generated PDF for offline access.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js**: A React framework for server-side rendering.
+- **React**: A JavaScript library for building user interfaces.
+- **API Integration**: Utilizes APIs to extract and format video content into PDFs.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/usamafayaz/videoglancer.git
+   ```
+   
+2. Navigate to the project directory:
+    ```bash
+    cd videoglancer
+    ```
+    
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Open your browser and navigate to http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+For any inquiries, please contact [usama.fayyaz157@gmail.com].
